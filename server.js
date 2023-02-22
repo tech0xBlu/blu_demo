@@ -50,8 +50,8 @@ db.mongoose
   });
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+app.get("/server", (req, res) => {
+  res.json({ message: "Server connected" });
 });
 
 // set port, listen for requests
