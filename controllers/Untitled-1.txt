@@ -1,0 +1,38 @@
+[
+  {
+    "id": "12345",
+    "products": [
+      {
+        "id": 0,
+        "productCode": "test",
+        "status": "PENDING",
+        
+      },
+      {
+        "id": 1,
+        "productCode": "test",
+        "status": "COMPLETE",
+        
+      }
+    ],
+    
+  }
+]
+
+
+await User.findOneAndUpdate(
+  query,
+  { $set: {"domains.$[el].addresses.Ethereum": "sdfgsdfgsdfgsdg"}},
+  { 
+             arrayFilters: [{ "el.domain": "suryapratap.in" }],
+             new: true
+          },
+    function(err, model) {
+      if(err){
+         console.log(err);
+         return res.send(err);
+      }
+
+      console.log('model: : ', model);
+       return ;
+   });
