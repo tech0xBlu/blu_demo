@@ -8,6 +8,26 @@ const db = require("./models");
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
+
+app.use(cors());
+
+
+var allowCrossDomain = function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8000', 'http://localhost:4200');
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cache-Control");
+
+  // intercept OPTIONS method
+  if ('OPTIONS' == req.method) {
+    res.send(200);
+  }
+  else {
+    next();
+  }
+};
+app.use(allowCrossDomain);
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -38,24 +58,7 @@ require('./routes/mint.routes')(app);
 //   next();
 // });
 
-app.use(cors());
 
-
-var allowCrossDomain = function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8000', 'http://localhost:4200');
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cache-Control");
-
-  // intercept OPTIONS method
-  if ('OPTIONS' == req.method) {
-    res.send(200);
-  }
-  else {
-    next();
-  }
-};
-app.use(allowCrossDomain);
 
 // parse requests of content-type - application/json
 app.use(express.json());
