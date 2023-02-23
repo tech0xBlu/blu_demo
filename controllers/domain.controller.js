@@ -194,6 +194,8 @@ exports.check_domain = async (req, res) => {
 
   try{
 
+    if(isValidExtension(req.body.name))
+
     var userid = new require('mongodb').ObjectID(req.userId);//req.params.id
     var query = {_id : userid}
 
@@ -242,3 +244,21 @@ exports.check_domain = async (req, res) => {
       return res.status(409).send({ message: error});
     }
 };
+
+function isValidExtension(str) {
+  if (!str.endsWith(".nft")) {
+    return false;
+  }
+  if (str.includes(".")) {
+    var parts = str.split(".");
+    if (parts[parts.length - 1] !== "nft") {
+      return false;
+    }
+    for (var i = 0; i < parts.length - 1; i++) {
+      if (parts[i] !== "") {
+        return false;
+      }
+    }
+  }
+  return true;
+}
