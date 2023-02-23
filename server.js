@@ -38,9 +38,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors({
-  origin: '*'
-}));
+// app.use(cors({
+//   origin: '*'
+// }));
 
 
 // var allowCrossDomain = function(req, res, next) {
