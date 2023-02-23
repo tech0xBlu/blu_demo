@@ -221,19 +221,23 @@ exports.check_domain = async (req, res) => {
              console.log('data of userdata', childelement.domain)
 
              if(childelement.domain == name){
-                 res.status(401).send({ 
-                     status: 401, 
-                     message: 'Domain already registered',
-                     data: { 'domain': name }
-                    });
                     userpresent=true;
                     console.log('userpresent ', userpresent)
-                    return false;
+                
              }
          });
          
      });  
 
+
+     if(userpresent){
+      res.status(401).send({ 
+        status: 401, 
+        message: 'Domain already registered',
+        data: { 'domain': name }
+       });
+       return 
+     }
 
       res.status(200).send({ 
         status: 200, 

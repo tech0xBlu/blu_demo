@@ -74,7 +74,7 @@ exports.signin = (req, res) => {
   
       res.status(200).send({
         status: 200, 
-        message: "Invalid Password!",
+        message: "User login successfull",
         data: {accessToken: token,
           id: user._id,
         email: user.email
