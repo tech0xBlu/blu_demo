@@ -15,8 +15,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
+
 var corsOptions = {
-  origin: "http://localhost:8000"
+  origin: '*'
 };
 
 require('./routes/auth.routes')(app);
@@ -27,6 +28,22 @@ require('./routes/mint.routes')(app);
 
 app.use(cors(corsOptions));
 //app.use(express.bodyParser());
+app.use(cors({
+  methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+}));
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,DELETE,PUT,PATCH')
+  res.header("Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  if (req.method === "OPTIONS") {
+    req.header('Access-Control-Allow-Methods', 'PUT,POST,GET,PATCH,DELETE,')
+    return res.status(200).json({});
+  }
+  next();
+});
+
 
 // parse requests of content-type - application/json
 app.use(express.json());

@@ -215,7 +215,7 @@ exports.check_domain = async (req, res) => {
          element.domains.forEach(childelement => {
              console.log('data of userdata', childelement.domain)
 
-             if(childelement.domain == 'suryasingh.nft'){
+             if(childelement.domain == 'suryasingh.crypto'){
                  res.status(401).send({ 
                      status: 401, 
                      message: 'Domain already registered',
