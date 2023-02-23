@@ -194,16 +194,19 @@ exports.check_domain = async (req, res) => {
 
   try{
 
-    if(isValidExtension(req.body.name))
+ 
 
     var userid = new require('mongodb').ObjectID(req.userId);//req.params.id
     var query = {_id : userid}
 
     console.log('inside the check_domain');
-    var name =  (req.body.name).toLowerCase(); 
-    console.log('name before comapre: ', name);
+    var name =  req.body.name; 
+    console.log('name before comapre: ', name.toLowerCase());
 
-    if (JSON.stringify(name).toLowerCase().endsWith(".nft")) {
+    var value= name.toLowerCase().endsWith(".nft");
+    console.log('value for check ', value);
+
+    if (name.toLowerCase().endsWith(".nft")) {
       name;
    } else {
     name = name + ".nft";
@@ -224,24 +227,29 @@ exports.check_domain = async (req, res) => {
                      data: { 'domain': name }
                     });
                     userpresent=true;
-                    return;
+                    console.log('userpresent ', userpresent)
+                    return false;
              }
          });
          
      });  
 
-     if(!userpresent){
+
       res.status(200).send({ 
         status: 200, 
         message: 'Domain Available',
         data: { 'domain': name }
       });
-    }
+       
+    
 
+ 
 
   }
     catch(error){
-      return res.status(409).send({ message: error});
+       //res.status(409).send({ message: error});
+
+       console.log('error: ' ,error);
     }
 };
 
