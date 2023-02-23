@@ -19,6 +19,14 @@ module.exports = function(app) {
     controller.add_domain
   );
 
+  app.post(
+    "/api/user/Domain/checkDomain",
+    [
+        authJwt.verifyToken,
+    ],
+    controller.check_domain
+  );
+
   // app.post("/api/auth/Domain/listDomain", controller.signin);
 
   // app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);

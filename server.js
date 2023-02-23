@@ -16,7 +16,7 @@ app.use(bodyParser.json())
 
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "http://localhost:8000"
 };
 
 require('./routes/auth.routes')(app);

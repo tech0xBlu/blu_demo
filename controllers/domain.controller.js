@@ -63,19 +63,7 @@ exports.add_domain = async (req, res) => {
 
 
 
-    //  await User.updateOne({_id:new require('mongodb').ObjectID(req.userId),'domains.domain': "suryapratap.in"}, {
-    //       $set: {"domains.$.addresses.BTC": "3894538475hjkdg"}
-    //      },
-    //     {   
-    //             //  arrayFilters: [{  "el.domain": "suryapratap.in"  }],
-    //              new: true
-    //           }, function(err,doc) {
-    //       if (err) {
-    //           console.log ('error: ', err) 
-    //           throw err; }
-    //       else { console.log("Updated"); }
-    //     });  
-     
+  
 
  
 
@@ -201,52 +189,56 @@ exports.add_domain = async (req, res) => {
 }
 };
 
-exports.signin = (req, res) => {
+exports.check_domain = async (req, res) => {
   console.log('inside signin controller', req.body);
-    User.findOne({
-        email: req.body.email
-      }).exec((err, user) => {
-        if (err) {
-          res.status(500).send({ 
-            status: 500, 
-            message: err,
-            data: {}
-           });
-          return;
-        }
 
-      if (!user) {
-        return res.status(404).send({ message: "User Not found." });
-      }
+  try{
 
-      var passwordIsValid = bcrypt.compareSync(
-        req.body.password,
-        user.password
-      );
+    var userid = new require('mongodb').ObjectID(req.userId);//req.params.id
+    var query = {_id : userid}
 
-      if (!passwordIsValid) {
-        return res.status(401).send({
-        status: 401, 
-        message: "Invalid Password!",
-        data: {accessToken: null}
-          
-        });
-      }
+    console.log('inside the check_domain');
+    var name =  (req.body.name).toLowerCase(); 
+    console.log('name before comapre: ', name);
 
-      var token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: 86400 // 24 hours
-      });
+    if (JSON.stringify(name).toLowerCase().endsWith(".nft")) {
+      name;
+   } else {
+    name = name + ".nft";
+   }
 
-  
-      res.status(200).send({
+   var userdata =await User.find({_id:userid}).limit(1);
+   var userpresent=false;
+     console.log('userdata: ', userdata[0].domains[0].domain);
+     
+     userdata.forEach(element => {
+         element.domains.forEach(childelement => {
+             console.log('data of userdata', childelement.domain)
+
+             if(childelement.domain == 'suryasingh.nft'){
+                 res.status(401).send({ 
+                     status: 401, 
+                     message: 'Domain already registered',
+                     data: { 'domain': name }
+                    });
+                    userpresent=true;
+                    return;
+             }
+         });
+         
+     });  
+
+     if(!userpresent){
+      res.status(200).send({ 
         status: 200, 
-        message: "Invalid Password!",
-        data: {accessToken: token,
-          id: user._id,
-        email: user.email
-        }
-
-        
+        message: 'Domain Available',
+        data: { 'domain': name }
       });
-    });
+    }
+
+
+  }
+    catch(error){
+      return res.status(409).send({ message: error});
+    }
 };
