@@ -15,16 +15,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
-
-var corsOptions = {
-  origin: '*'
-};
-
-cors({
-  origin: "*",
-     })
-
-  // UseCors
   
 
 
@@ -34,25 +24,23 @@ require('./routes/domain.routes')(app);
 require('./routes/mint.routes')(app);
 
 
-app.use(cors(corsOptions));
-//app.use(express.bodyParser());
+
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,DELETE,PUT,PATCH')
+  res.header("Access-Control-Allow-Headers",
+    "Origin, Content-Type, Accept, Authorization, Special-Request-Header, X-Requested-With");
+  if (req.method === "OPTIONS") {
+    req.header('Access-Control-Allow-Methods', 'PUT,POST,GET,PATCH,DELETE,')
+    return res.status(200).json({});
+  }
+  next();
+});
+
 app.use(cors({
-  methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+  origin: '*'
 }));
-
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,DELETE,PUT,PATCH')
-//   res.header("Access-Control-Allow-Headers",
-//     "Origin, Content-Type, Accept, Authorization, Special-Request-Header, X-Requested-With");
-//   if (req.method === "OPTIONS") {
-//     req.header('Access-Control-Allow-Methods', 'PUT,POST,GET,PATCH,DELETE,')
-//     return res.status(200).json({});
-//   }
-//   next();
-// });
-
-
 
 
 // var allowCrossDomain = function(req, res, next) {
