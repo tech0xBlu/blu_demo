@@ -38,9 +38,7 @@ require('./routes/mint.routes')(app);
 //   next();
 // });
 
-// app.use(cors({
-//   origin: '*'
-// }));
+app.use(cors());
 
 
 var allowCrossDomain = function(req, res, next) {
