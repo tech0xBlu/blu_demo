@@ -51,8 +51,8 @@ exports.mintDomain = async (req, res) => {
     console.log('lower case name', name);
     console.log('type of: ', typeof(name))
 
-    var userid = new require('mongodb').ObjectID(req.userId);//req.params.id
-    var query = {_id : userid}
+    // var userid = new require('mongodb').ObjectID(req.userId);//req.params.id
+    // var query = {_id : userid}
 
     if (JSON.stringify(name).toLowerCase().endsWith(".nft")) {
          name;
@@ -60,7 +60,7 @@ exports.mintDomain = async (req, res) => {
        name = name + ".nft";
       }
 
-      var userdata =await User.find({_id:userid}).limit(1);
+      var userdata =await User.find({email:req.body.email}).limit(1);
 
         console.log('userdata: ', userdata[0].domains[0].domain);
         
@@ -118,19 +118,23 @@ exports.mintDomain = async (req, res) => {
   //   contract.methods.transfer(to_address, amount).encodeABI();
 
     const accountTokenBalance = await contract.methods.balanceOf(from_address).call();
-    // var doc = contract.methods.mint(from_address, name, websitedata).encodeABI();
-    // var rawTransaction = { "to": process.env.contract_address, "gas": gasLimit, "data": doc };
-    // const send = await web3mat.eth.accounts.signTransaction(rawTransaction, process.env.PRIVATE_KEY);
+    var doc = contract.methods.mint(from_address, name, websitedata).encodeABI();
+    var rawTransaction = { "to": process.env.contract_address, "gas": gasLimit, "data": doc };
+    const send = await web3mat.eth.accounts.signTransaction(rawTransaction, process.env.PRIVATE_KEY);
 
     var hash = undefined;
-    // const maticTransactionReciept = await web3mat.eth.sendSignedTransaction(
-    //     send.rawTransaction
-    // ).catch(function (error) {
-    //     console.log(error);
-    //     hash = false
-    // });
+    const maticTransactionReciept = await web3mat.eth.sendSignedTransaction(
+        send.rawTransaction
+    ).catch(function (error) {
+        console.log(error);
+        hash = false
+    });
 
-    // hash = maticTransactionReciept.transactionHash;
+
+
+    hash = maticTransactionReciept.transactionHash;
+
+    console.log('hash transactions: ', hash);
 
 
     var new_domain =[{
@@ -142,7 +146,7 @@ exports.mintDomain = async (req, res) => {
                     "Bitcoin": ''
                 }
             }]
-           await User.findOneAndUpdate( {_id : userid} , {
+           await User.findOneAndUpdate( {email : req.body.email} , {
               $push: { domains: new_domain }
            }).then(() => {
               
@@ -208,15 +212,6 @@ exports.mintDomain = async (req, res) => {
    //  {"_id": new ObjectId('63f4ad9a1d3a54bcb067551a')}
 
 
-
-    res.status(200).send({ 
-        status: 200, 
-        message: 'ABI data found',
-        data: {}
-       });
-      return;
-
-
     
  } catch (error) {
     res.send({
@@ -224,6 +219,7 @@ exports.mintDomain = async (req, res) => {
         message: error.message,
         data: {} 
       })    
+      return;
  }
 
 };

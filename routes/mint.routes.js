@@ -22,7 +22,7 @@ module.exports = function(app) {
 
   app.post("/api/user/mintDomain",
   [
-    authJwt.verifyToken,
+    verifySignUp.checkUserEmail,
 ],
   controller.mintDomain);
 };
