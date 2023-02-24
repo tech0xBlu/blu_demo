@@ -64,21 +64,31 @@ exports.mintDomain = async (req, res) => {
 
         console.log('userdata: ', userdata[0].domains[0].domain);
         
+        var userpresent=false;
+        console.log('userdata: ', userdata[0].domains[0].domain);
+        
         userdata.forEach(element => {
             element.domains.forEach(childelement => {
                 console.log('data of userdata', childelement.domain)
+   
                 if(childelement.domain == name){
-                    res.status(401).send({ 
-                        status: 401, 
-                        message: ' domain already registered',
-                        data: { 'domain': name }
-                       });
-                    //   return ;
-                    console.log('domain already registered');
+                       userpresent=true;
+                       console.log('userpresent ', userpresent)
+                   
                 }
             });
             
-        });    
+        });  
+   
+   
+        if(userpresent){
+         res.status(401).send({ 
+           status: 401, 
+           message: 'Domain already registered',
+           data: { 'domain': name }
+          });
+          return 
+        }
 
     console.log('query id', query);
 
@@ -219,7 +229,6 @@ exports.mintDomain = async (req, res) => {
         message: error.message,
         data: {} 
       })    
-      return;
  }
 
 };
