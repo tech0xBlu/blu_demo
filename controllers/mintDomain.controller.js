@@ -54,11 +54,13 @@ exports.mintDomain = async (req, res) => {
     // var userid = new require('mongodb').ObjectID(req.userId);//req.params.id
     // var query = {_id : userid}
 
-    if (JSON.stringify(name).toLowerCase().endsWith(".nft")) {
-         name;
-      } else {
-       name = name + ".nft";
-      }
+  
+
+      if (name.toLowerCase().endsWith(".nft") || name.toLowerCase().endsWith(".eth")) {
+        name;
+     } else {
+      name = name + ".nft";
+     }
 
       var userdata =await User.find({email:req.body.email}).limit(1);
 
