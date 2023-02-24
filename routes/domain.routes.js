@@ -19,11 +19,13 @@ module.exports = function(app) {
     controller.add_domain
   );
 
+  
+
   app.post(
     "/api/user/Domain/checkDomain",
     [
-        authJwt.verifyToken,
-    ],
+      verifySignUp.checkUserEmail,
+  ],
     controller.check_domain
   );
 

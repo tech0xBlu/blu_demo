@@ -196,8 +196,8 @@ exports.check_domain = async (req, res) => {
 
  
 
-    var userid = new require('mongodb').ObjectID(req.userId);//req.params.id
-    var query = {_id : userid}
+    // var userid = new require('mongodb').ObjectID(req.userId);//req.params.id
+    // var query = {_id : userid}
 
     console.log('inside the check_domain');
     var name =  req.body.name; 
@@ -212,7 +212,7 @@ exports.check_domain = async (req, res) => {
     name = name + ".nft";
    }
 
-   var userdata =await User.find({_id:userid}).limit(1);
+   var userdata =await User.find({email:req.body.email}).limit(1);
    var userpresent=false;
      console.log('userdata: ', userdata[0].domains[0].domain);
      
