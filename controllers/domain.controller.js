@@ -206,7 +206,7 @@ exports.check_domain = async (req, res) => {
     var value= name.toLowerCase().endsWith(".nft");
     console.log('value for check ', value);
 
-    if (name.toLowerCase().endsWith(".nft")) {
+    if (name.toLowerCase().endsWith(".nft") ||  name.toLowerCase().endsWith(".eth")) {
       name;
    } else {
     name = name + ".nft";
